@@ -14,13 +14,18 @@ document.addEventListener("DOMContentLoaded", function() {
     async function initializePrice() {
         logDebug('Starting price initialization...');
         
-        // Bug: 
-        response = fetch('/api/price?')
-        data = response.json()
-        productPrice = data.price
-        document.getElementById('product-price').textContent = productPrice.toFixed(2);
-        logDebug(`Price initialized to: $${productPrice}`);
-        updateTotal();
+        // Bug:
+        try {
+            const response = await fetch ('/api/price')
+            const data = await response.json();
+            productPrice = data.price;
+            document.getElementById('product-price').textContent = productPrice.toFixed(2);
+            logDebug(`Price initialized to: $${productPrice}`);
+            updateTotal();
+        }
+        catch (error) {
+            logDebug('Error initializing price: ${productPrice}');
+        }
         logDebug('Price initialization function completed');
     }
 
@@ -48,6 +53,9 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('total').textContent = total.toFixed(2);
         logDebug(`Total updated to: $${total}`);
     }
+
+    window.increaseQuantity = increaseQuantity;
+    window.decreaseQuantity = decreaseQuantity;
 
     // Initialize the page
     logDebug('Page initialization started');
