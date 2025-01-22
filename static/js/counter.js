@@ -39,9 +39,12 @@ async function saveCounter() {
 // Initialize counter from server when page loads
 async function initializeCounter() {
     try {
-        
-        count = 0; // get this from the server at /get_count
+        alert("Counter initialized");
+        const response = await fetch('/get_count');
+        const data = await response.json();
+        count = data.count;
         counterDisplay.textContent = count;
+        setConnectionStatus();
     } catch (error) {
         console.error('Error initializing counter:', error);
     }
@@ -51,4 +54,9 @@ function setConnectionStatus() {
     // once server counter is initialized with data from server
     // set div with id connectionStatus text content to "Connected" 
     // and color to green
+    const connectionStatus = document.getElementById("connectionStatus");
+    connectionStatus.textContent = "Connected";
+    connectionStatus.style.color = "green";
 }
+
+initializeCounter(); // call the function, since it is async
